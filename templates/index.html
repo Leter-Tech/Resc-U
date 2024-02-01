@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resc-U | AI for Good</title>
+    <style>
+        body {
+            background-color: #470000;
+            color: #f0d6d3;
+            font-family: sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        input, select {
+            background-color: #470000;
+            color: #f0d6d3;
+            outline-color: #f0d6d3;
+            margin: 5px 0;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-section {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #f0d6d3;
+            color: #470000;
+            border: none;
+            padding: 8px 20px;
+            cursor: pointer;
+        }
+
+        p {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resc-U | AI for Good</h1>
+    <form id="uploadForm" method="POST" enctype="multipart/form-data">
+        <div class="form-section">
+            <h2>Person Lost Form</h2>
+            <label for="left_name">Name:</label>
+            <input type="text" id="left_name" name="left_name" required>
+
+            <label for="left_age">Age:</label>
+            <input type="number" id="left_age" name="left_age" required>
+
+            <label for="left_gender">Gender:</label>
+            <select id="left_gender" name="left_gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="left_facial_features">Facial Features:</label>
+            <input type="text" id="left_facial_features" name="left_facial_features" required>
+
+            <label for="left_location">Last Seen Location:</label>
+            <input type="text" id="left_location" name="left_location" required>
+
+            <label for="left_date">Date:</label>
+            <input type="date" id="left_date" name="left_date" required>
+
+            <label for="left_keywords">Keywords (comma separated):</label>
+            <input type="text" id="left_keywords" name="left_keywords" required>
+
+            <br>
+
+            <label for="left_image">Upload Person's Image:</label>
+            <input type="file" id="left_image" name="left_image" accept="image/*" required>
+
+        </div>
+
+        <div class="form-section">
+            <h2>Person Found Form</h2>
+            <label for="right_name">Name:</label>
+            <input type="text" id="right_name" name="right_name" required>
+
+            <label for="right_age">Age:</label>
+            <input type="number" id="right_age" name="right_age" required>
+
+            <label for="right_gender">Gender:</label>
+            <select id="right_gender" name="right_gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="right_facial_features">Facial Features:</label>
+            <input type="text" id="right_facial_features" name="right_facial_features" required>
+
+            <label for="right_location">Last Seen Location:</label>
+            <input type="text" id="right_location" name="right_location" required>
+
+            <label for="right_date">Date:</label>
+            <input type="date" id="right_date" name="right_date" required>
+
+            <label for="right_keywords">Keywords (comma separated):</label>
+            <input type="text" id="right_keywords" name="right_keywords" required>
+
+            <br>
+
+            <label for="right_image">Upload Person's Image:</label>
+            <input type="file" id="right_image" name="right_image" accept="image/*" required>
+        </div>
+
+        <button type="submit" style="font-weight: bolder;">Match</button>
+    </form>
+
+    {% if result %}
+        <div>
+            <h3>Results:</h3>
+            <p>{{ result }}</p>
+        </div>
+    {% endif %}
+
+    {% if image_file %}
+    <img src="{{ image_file }}" alt="Face Recognition Results" style="max-width:100%; height:auto;">
+    {% endif %}
+    
+</body>
+</html>

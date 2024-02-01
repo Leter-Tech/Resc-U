@@ -1,0 +1,7 @@
+Flask
+Gunicorn
+fuzzywuzzy
+datetime
+face-recognition
+opencv-python
+numpy
