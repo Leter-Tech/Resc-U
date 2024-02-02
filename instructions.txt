@@ -1,0 +1,1 @@
+Visual Studio C++ must be installed on your pc with build tools for the program to run
