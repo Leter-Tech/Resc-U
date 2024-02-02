@@ -1,1 +1,2 @@
 Visual Studio C++ must be installed on your pc with build tools for the program to run, a quick google search will help!
+https://github.com/bycloudai/InstallVSBuildToolsWindows
