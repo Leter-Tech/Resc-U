@@ -1,2 +1,3 @@
-Visual Studio C++ must be installed on your pc with build tools for the program to run, a quick google search will help!
-https://github.com/bycloudai/InstallVSBuildToolsWindows
+Visual Studio C++ must be installed on your pc with build tools for the program to run: https://github.com/bycloudai/InstallVSBuildToolsWindows
+
+Also pip install all the requirements with this command in terminal: pip install -r requirements.txt
