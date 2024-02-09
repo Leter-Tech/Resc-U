@@ -1,41 +1,15 @@
 from flask import Flask, request, render_template
 from datetime import datetime
 from fuzzywuzzy import fuzz
+import face_recognition
 import cv2
 import os
 import numpy as np
-from facenet_pytorch import MTCNN, InceptionResnetV1
-import torch
-from PIL import Image
-import mediapipe as mp
 
 app = Flask(__name__)
 
 UPLOAD_FOLDER = 'UPLOAD_FOLDER'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-mp_face_mesh = mp.solutions.face_mesh
-face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, refine_landmarks=True, min_detection_confidence=0.5)
-
-mp_drawing = mp.solutions.drawing_utils
-drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1, color=(0, 255, 0))
-
-zupper=0
-
-mtcnn = MTCNN(image_size=160, margin=0, min_face_size=20)
-resnet = InceptionResnetV1(pretrained='vggface2').eval()
-
-def get_face_embedding(image_path):
-    img = Image.open(image_path)
-    face = mtcnn(img)
-    with torch.no_grad():
-        embedding = resnet(face.unsqueeze(0))
-    return embedding
-
-def calculate_similarity(embedding1, embedding2):
-    cos_sim = torch.nn.functional.cosine_similarity(embedding1, embedding2)
-    return cos_sim.item()
-
 
 @app.route('/', methods=['GET'])
 def form():
@@ -57,14 +31,11 @@ def form_post():
     Gender_Found = request.form['right_gender']
     Date_Lost = datetime.strptime(request.form['left_date'], '%Y-%m-%d')
     Date_Found = datetime.strptime(request.form['right_date'], '%Y-%m-%d')
-    left_image_path = os.path.join(app.config['UPLOAD_FOLDER'], "left.png")
-    right_image_path = os.path.join(app.config['UPLOAD_FOLDER'], "right.png")
-
     left_image = request.files['left_image']
     right_image = request.files['right_image']
 
-    left_image.save(left_image_path)
-    right_image.save(right_image_path)
+    left_image.save(os.path.join(app.config['UPLOAD_FOLDER'], "left.png"))
+    right_image.save(os.path.join(app.config['UPLOAD_FOLDER'], "right.png"))
 
     difference_date = (Date_Found - Date_Lost).days
     difference_age = abs(Age_Found - Age_Lost)
@@ -80,51 +51,48 @@ def form_post():
 
     result = f"Name Match: {name_ratio}% | \nLocation Match: {location_ratio}% | \nFeatures Match: {features_ratio}% | \nKeywords Match: {keywords_ratio}% | \nDate Match: {date_ratio}% | \nAge Match: {age_ratio}% | \nGender Match: {gender_ratio}%"
     print(result)
-
-    embedding1 = get_face_embedding(left_image_path)
-    embedding2 = get_face_embedding(right_image_path)
-
-    similarity = calculate_similarity(embedding1, embedding2) if embedding1 is not None and embedding2 is not None else 0
-    optimization = round(similarity*100) + 20
-    accuracy = optimization
-    print(f"[{accuracy:.2f}% Match]✅")
     
+    def draw_landmarks(image, face_landmarks):
+        for facial_feature in face_landmarks.keys():
+            points = face_landmarks[facial_feature]
+            for i in range(len(points) - 1):
+                cv2.line(image, points[i], points[i+1], (0, 255, 0), 2)
+            cv2.line(image, points[-1], points[0], (0, 255, 0), 2)
+
     def process_image(image_path, target_height=600):
-        image = cv2.imread(image_path)
-        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = face_recognition.load_image_file(image_path)
+        face_landmarks_list = face_recognition.face_landmarks(image)
         
-        results = face_mesh.process(image_rgb)
-        
-        if results.multi_face_landmarks:
-            for face_landmarks in results.multi_face_landmarks:
-                mp_drawing.draw_landmarks(
-                    image=image_rgb, 
-                    landmark_list=face_landmarks, 
-                    connections=mp_face_mesh.FACEMESH_TESSELATION, 
-                    landmark_drawing_spec=drawing_spec, 
-                    connection_drawing_spec=drawing_spec)
-        
-        image_with_landmarks = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2BGR)
-        
-        current_height = image_with_landmarks.shape[0]
+        image_cv2 = cv2.imread(image_path)
+
+        for face_landmarks in face_landmarks_list:
+            draw_landmarks(image_cv2, face_landmarks)
+
+        current_height = image_cv2.shape[0]
         scale_factor = target_height / current_height
-        image_resized = cv2.resize(image_with_landmarks, (0, 0), fx=scale_factor, fy=scale_factor)
-        
-        return image_resized
+        image_cv2_resized = cv2.resize(image_cv2, (0, 0), fx=scale_factor, fy=scale_factor)
 
-    
-    left_image_path = "UPLOAD_FOLDER/left.png"
-    right_image_path= "UPLOAD_FOLDER/left.png"
-
-    embedding1 = get_face_embedding(left_image_path)
-    embedding2 = get_face_embedding(right_image_path)
+        return image_cv2_resized
 
     image_paths = ["UPLOAD_FOLDER/left.png", "UPLOAD_FOLDER/right.png"]
 
+    def find_face_encodings(image_path):
+        image = cv2.imread(image_path)
+        face_enc = face_recognition.face_encodings(image)
+        return face_enc[0]
+
+    image_1 = find_face_encodings("UPLOAD_FOLDER/left.png")
+    image_2  = find_face_encodings("UPLOAD_FOLDER/right.png")
+
+
+
+    distance = face_recognition.face_distance([image_1], image_2)
+    distance = round(distance[0] * 100)
+    accuracy = 136-round(distance)
+    print(f"[{accuracy}% Match]✅")
+
     images = [process_image(image_path) for image_path in image_paths]
     concatenated_image = np.concatenate(images, axis=1)
-
-    
 
     text_to_display = f"{str(accuracy)}% Match"
     cv2.putText(concatenated_image, text_to_display, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 73), 2, cv2.LINE_AA)
@@ -136,6 +104,7 @@ def form_post():
     if not os.path.exists(static_dir):
         os.makedirs(static_dir)
 
+    # Save the image with error handling
     output_path = os.path.join(static_dir, 'concatenated_image.jpg')
     try:
         cv2.imwrite(output_path, concatenated_image)
@@ -143,6 +112,8 @@ def form_post():
     except Exception as e:
         print(f"Error saving image: {e}")
     return render_template('index.html', result=result, image_file='static/concatenated_image.jpg')
+
+    
 
 if __name__ == '__main__':
     app.run(debug=False)
