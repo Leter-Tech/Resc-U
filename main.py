@@ -69,9 +69,9 @@ def form_post():
     difference_date = (Date_Found - Date_Lost).days
     difference_age = abs(Age_Found - Age_Lost)
 
-    gender_ratio = 100 if Gender_Lost == Gender_Found else 0 * 6/100
-    age_ratio = 100 if difference_age <= 3 else 90 if difference_age <= 5 else 70 if difference_age <= 7 else 10 * 2/100
-    date_ratio = 100 if difference_date < 10 else 90 if difference_date < 20 else 80 if difference_date < 30 else 70 if difference_date < 60 else 60 if difference_date < 90 else 10 * 3/100
+    gender_ratio = (100 if Gender_Lost == Gender_Found else 0) * 6/100
+    age_ratio = (100 if difference_age <= 3 else 90 if difference_age <= 5 else 70 if difference_age <= 7 else 10) * 2/100
+    date_ratio = (100 if difference_date < 10 else 90 if difference_date < 20 else 80 if difference_date < 30 else 70 if difference_date < 60 else 60 if difference_date < 90 else 10) * 3/100
     name_ratio = fuzz.ratio(Name_Lost, Name_Found) * 7/100
     location_ratio = fuzz.ratio(Location_Lost, Location_Found) * 6/100
     features_ratio = fuzz.ratio(Features_Lost, Features_Found) * 9/100
@@ -84,11 +84,11 @@ def form_post():
 
     similarity = calculate_similarity(embedding1, embedding2) if embedding1 is not None and embedding2 is not None else 0
     optimization = round(similarity*100) + 20
+    if optimization > 100:
+        optimization = 99
     face_ratio = optimization*65/100
     final_match_percentage = gender_ratio + age_ratio + date_ratio + name_ratio + location_ratio + features_ratio + keywords_ratio + face_ratio
-    accuracy = optimization
-    if final_match_percentage > 100:
-        final_match_percentage = 99
+    final_match_percentage = round(final_match_percentage)    
     print(f"[{final_match_percentage:.2f}% Match]✅")
     
     def process_image(image_path, target_height=600):
