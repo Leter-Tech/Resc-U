@@ -20,8 +20,6 @@ face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, refin
 mp_drawing = mp.solutions.drawing_utils
 drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1, color=(0, 255, 0))
 
-zupper=0
-
 mtcnn = MTCNN(image_size=160, margin=0, min_face_size=20)
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
@@ -35,7 +33,6 @@ def get_face_embedding(image_path):
 def calculate_similarity(embedding1, embedding2):
     cos_sim = torch.nn.functional.cosine_similarity(embedding1, embedding2)
     return cos_sim.item()
-
 
 @app.route('/', methods=['GET'])
 def form():
@@ -76,8 +73,6 @@ def form_post():
     location_ratio = fuzz.ratio(Location_Lost, Location_Found) * 6/100
     features_ratio = fuzz.ratio(Features_Lost, Features_Found) * 9/100
     keywords_ratio = fuzz.ratio(Keywords_Lost, Keywords_Found) * 6/100
-
-    result = f"Name Match: {name_ratio}% | \nLocation Match: {location_ratio}% | \nFeatures Match: {features_ratio}% | \nKeywords Match: {keywords_ratio}% | \nDate Match: {date_ratio}% | \nAge Match: {age_ratio}% | \nGender Match: {gender_ratio}%"
     
     embedding1 = get_face_embedding(left_image_path)
     embedding2 = get_face_embedding(right_image_path)
@@ -89,7 +84,7 @@ def form_post():
     face_ratio = optimization*65/100
     final_match_percentage = gender_ratio + age_ratio + date_ratio + name_ratio + location_ratio + features_ratio + keywords_ratio + face_ratio
     final_match_percentage = round(final_match_percentage)    
-    print(f"[{final_match_percentage:.2f}% Match]✅")
+    print(f"[{final_match_percentage:.2f}% Match]")
     
     def process_image(image_path, target_height=600):
         image = cv2.imread(image_path)
@@ -107,14 +102,12 @@ def form_post():
                     connection_drawing_spec=drawing_spec)
         
         image_with_landmarks = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2BGR)
-        
         current_height = image_with_landmarks.shape[0]
         scale_factor = target_height / current_height
         image_resized = cv2.resize(image_with_landmarks, (0, 0), fx=scale_factor, fy=scale_factor)
         
         return image_resized
 
-    
     left_image_path = "UPLOAD_FOLDER/left.png"
     right_image_path= "UPLOAD_FOLDER/left.png"
 
@@ -126,13 +119,9 @@ def form_post():
     images = [process_image(image_path) for image_path in image_paths]
     concatenated_image = np.concatenate(images, axis=1)
 
-    
-
     text_to_display = f"{str(final_match_percentage)}% Match"
     cv2.putText(concatenated_image, text_to_display, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 73), 2, cv2.LINE_AA)
-
     cv2.putText(concatenated_image, "Resc-U | AI for Good", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 73), 2, cv2.LINE_AA)
-
 
     static_dir = 'static'
     if not os.path.exists(static_dir):
