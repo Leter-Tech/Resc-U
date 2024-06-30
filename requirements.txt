@@ -1,0 +1,9 @@
+Flask==2.0.2
+fuzzywuzzy==0.18.0
+opencv-python==4.5.4.58
+numpy==1.22.1
+facenet-pytorch==2.5.2
+torch==1.10.0
+Pillow==8.4.0
+mediapipe==0.8.11
+gunicorn==20.1.0
