@@ -89,13 +89,11 @@ graph TD
 
 - **Facial Recognition**  
   - **PyTorch MTCNN, InceptionResNetV1, VGGFace2**: Achieves 94% accuracy using a dataset of 3.31M images.
-  - Detects facial landmarks and matches childhood images with adult images using **Cosine Similarity**.
+  - Detects facial landmarks and is also capable of matching childhood images with adult images using **Cosine Similarity** of facial embeddings.
 
 - **Natural Language Processing (NLP)**  
   - Leverages **Levenshtein Distance** for text similarity.
   - Includes a custom algorithm to factor in parameters like **age** and **date differences**.
-
-
 
 ## Match Percentage Algorithm 🧮
 
