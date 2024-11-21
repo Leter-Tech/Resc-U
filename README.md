@@ -55,15 +55,31 @@ Resc-U is an **AI-enabled app** designed to:
 
 ```mermaid
 graph TD
+    style A fill:#470000,stroke:#470000,color:#f0d6d3
+    style B fill:#470000,stroke:#470000,color:#f0d6d3
+    style C fill:#470000,stroke:#470000,color:#f0d6d3
+    style D fill:#470000,stroke:#470000,color:#f0d6d3
+    style E fill:#470000,stroke:#470000,color:#f0d6d3
+    style F fill:#470000,stroke:#470000,color:#f0d6d3
+    style G fill:#470000,stroke:#470000,color:#f0d6d3
+    style H fill:#470000,stroke:#470000,color:#f0d6d3
+    style I fill:#470000,stroke:#470000,color:#f0d6d3
+    style J fill:#470000,stroke:#470000,color:#f0d6d3
+    style K fill:#470000,stroke:#470000,color:#f0d6d3
+    style L fill:#470000,stroke:#470000,color:#f0d6d3
+    style M fill:#470000,stroke:#470000,color:#f0d6d3
+    style N fill:#470000,stroke:#470000,color:#f0d6d3
+    style Resc-U fill:#470000,stroke:#470000,color:#f0d6d3
+
     A[Facial Recognition] --> B[PyTorch MTCNN]
     A --> C[InceptionResNetV1]
     A --> D[VGGFace2]
     E[Natural Language Processing] --> F[Levenshtein Distance]
-    E --> G[Custom Algorithms for Age & Date Matching]
+    E --> G[Each parameter is weighted differently based on importance]
     H[Frontend] --> I[HTML, CSS, JavaScript]
-    H --> J[Python]
     K[Backend] --> L[Database Integration]
     K --> M[Real-time Matching Algorithm]
+    K --> J[Python Flask Server]
     I --> Resc-U
     J --> Resc-U
     Resc-U --> N[Impact and Reuniting Families]
