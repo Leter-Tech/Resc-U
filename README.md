@@ -167,8 +167,7 @@ Resc-U’s technology is not just innovative but life-changing:
 
 ## Read the Pitchdeck 📄
 
-To understand the vision, technology, and impact of Resc-U in detail, check out our pitchdeck:  
-[Read Pitchdeck >](https://github.com/Leter-Tech/Resc-U/blob/main/Pitchdeck.pdf)
+To understand the vision, technology, and impact of Resc-U in detail, check out our pitchdeck:  [Read Pitchdeck >](https://github.com/Leter-Tech/Resc-U/blob/main/Pitchdeck.pdf)
 
 ## Thank You 🙏
 
