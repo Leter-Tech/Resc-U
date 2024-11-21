@@ -7,7 +7,7 @@ Resc-U is an AI-powered application aimed at tackling the grave issue of missing
 
 - **8M+** children are reported missing globally every year.
 
-- **27M+** people go missing as victims of human trafficking annually
+- **27M+** people go missing as victims of human trafficking annually.
 
 - In **India**:
   - **100K+** children go missing annually (reported cases). *(Source: Bachpan Bachao Andolan, NGO)*
