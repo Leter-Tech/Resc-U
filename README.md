@@ -1,6 +1,8 @@
 
 # Resc-U - AI for Good
 
+**Harnessing AI to reunite missing people and prevent heinous crimes.**
+
 Resc-U is an AI-powered application aimed at tackling the grave issue of missing persons, especially children and women, in India and beyond. Utilizing advanced **Facial Recognition** and **Natural Language Processing (NLP)** technologies, Resc-U brings hope to families looking for their lost loved ones.
 
 ## The Problem 🚨
