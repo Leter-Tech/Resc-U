@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resc-U | AI FOR GOOD</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #470000;
+            color: #f0d6d3;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        input, select {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #f0d6d3;
+            outline-color: #f0d6d3;
+            margin: 5px 0;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+            border: none;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-section {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #f0d6d3;
+        }
+
+        button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #470000;
+            border: none;
+            padding: 8px 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        p {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #f0d6d3;
+        }
+        .explanation {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #f0d6d3;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <img width="150px"  src="../static/logo.png" align="left">
+
+    <br><br>
+
+    <h1 style="font-size: 50px;">AI Engine Demo</h1>
+    <form style="margin-top: -1.5%;" id="uploadForm" method="POST" enctype="multipart/form-data">
+        <div class="form-section">
+            <h2>Person Lost Form</h2>
+            <label for="left_name">Name:</label>
+            <input type="text" id="left_name" name="left_name" required>
+
+            <label for="left_age">Age:</label>
+            <input type="number" id="left_age" name="left_age" required>
+
+            <label for="left_gender">Gender:</label>
+            <select id="left_gender" name="left_gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="left_facial_features">Facial Features:</label>
+            <input type="text" id="left_facial_features" name="left_facial_features" required>
+
+            <label for="left_location">Last Seen Location:</label>
+            <input type="text" id="left_location" name="left_location" required>
+
+            <label for="left_date">Date:</label>
+            <input type="date" id="left_date" name="left_date" required>
+
+            <label for="left_keywords">Keywords (comma separated):</label>
+            <input type="text" id="left_keywords" name="left_keywords" required>
+
+            <br>
+
+            <div class="file-input-container">
+                <input type="file" id="left_image" name="left_image" class="file-input" accept="image/*" required>
+                <label class="file-label" for="left_image">Choose File</label>
+            </div>
+
+        </div>
+
+        <div class="form-section">
+            <h2>Person Found Form</h2>
+            <label for="right_name">Name:</label>
+            <input type="text" id="right_name" name="right_name" required>
+
+            <label for="right_age">Age:</label>
+            <input type="number" id="right_age" name="right_age" required>
+
+            <label for="right_gender">Gender:</label>
+            <select id="right_gender" name="right_gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="right_facial_features">Facial Features:</label>
+            <input type="text" id="right_facial_features" name="right_facial_features" required>
+
+            <label for="right_location">Last Seen Location:</label>
+            <input type="text" id="right_location" name="right_location" required>
+
+            <label for="right_date">Date:</label>
+            <input type="date" id="right_date" name="right_date" required>
+
+            <label for="right_keywords">Keywords (comma separated):</label>
+            <input type="text" id="right_keywords" name="right_keywords" required>
+
+            <br>
+
+            <div class="file-input-container">
+                <input type="file" id="right_image" name="right_image" class="file-input" accept="image/*" required>
+                <label class="file-label" for="right_image">Choose File</label>
+            </div>
+        </div>
+
+        <button type="submit">Match</button>
+    </form>
+<br>
+    {% if image_file %}
+    <img src="{{ image_file }}" alt="Matching Results" style="max-width:100%; height:auto;">
+    {% endif %}
+
+    <br><br>
+
+    <div class="explanation">
+        <h2 style="font-size: 45px; margin-top: 1.5%;" align="center">Match Percentage Calculation</h2>
+        <p style="font-size: 25px;" align="center">(Please pause and have a look at the math behind match percentage(%) calculation)</p>
+        <ol style="font-size: 20px;">
+            <li><p style="font-size: 20px; font-weight: bold;">Facial Similarity • Image • Weight: 65%<ul><li>PyTorch MTCNN • InceptionResnetV1 • VGGFace2</li></ul></p></li>
+            <li><p style="font-size: 20px; font-weight: bold;">Facial Features • Text • Weight: 9%<ul><li>FuzzyWuzzy • Levenshtein Distance</li></ul></p></li>
+            <li><p style="font-size: 20px; font-weight: bold;">Gender • Integer (0 ,1, 2) • Weight: 2%<ul><li>Same: 100% | Different: 0%</li></ul></p></li>
+            <li><p style="font-size: 20px; font-weight: bold;">Location • Text • Weight: 6%<ul><li>FuzzyWuzzy • Levenshtein Distance</li></ul></p></li>
+            <li><p style="font-size: 20px; font-weight: bold;">Name • Text • Weight: 7%<ul><li>FuzzyWuzzy • Levenshtein Distance</li></ul></p></li>
+            <li><p style="font-size: 20px; font-weight: bold;">Age • Integer • Weight: 2%<ul><li>Difference > 7y (10%) | Difference <= 7y (70%) | Difference <= 5y (90%) | Difference <= 3y (100%)</li></ul></p></li>
+            <li><p style="font-size: 20px; font-weight: bold;">Date • Integer • Weight: 3%<ul><li>Difference > 90d (10%) | Difference < 90d (60%) | Difference < 60d (70%) | Difference < 30d (80%) | Difference < 20d (90%) | Difference < 10d (100%)</li></ul></p></li>
+            <li><p style="font-size: 20px; font-weight: bold;">Keywords • Text • Weight: 6%<ul><li>FuzzyWuzzy • Levenshtein Distance</li></ul></p></li>
+        </ol>
+    </div>
+
+</body>
+</html>
