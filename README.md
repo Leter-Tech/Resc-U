@@ -1,5 +1,5 @@
 
-# Resc-U - AI for Good
+# Resc-U | AI for Good
 
 **Harnessing AI to reunite missing people and prevent heinous crimes.**
 
