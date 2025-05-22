@@ -177,4 +177,15 @@ Resc-U is more than just an app—it's a movement to make the world a safer plac
 
 ---
 
+## 🛡️ License
+
+This project is shared publicly for learning and inspiration purposes only.
+
+❌ You may **NOT** copy, reuse, redistribute, or modify this code.  
+✅ You may view and learn from the code.
+
+Copyright © | All rights reserved
+
+---
+
 Built with ❤️ for a safer tomorrow.
